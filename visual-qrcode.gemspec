@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require_relative "lib/visual/qrcode/version"
+require_relative "lib/visual_qrcode/version"
 
 Gem::Specification.new do |spec|
   spec.name = "visual-qrcode"
-  spec.version = Visual::Qrcode::VERSION
+  spec.version = VisualQrcode::VERSION
   spec.authors = ["Caillou"]
   spec.email = ["6117264+JeSuisUnCaillou@users.noreply.github.com"]
 

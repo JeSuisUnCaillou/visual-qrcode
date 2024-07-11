@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "visual/qrcode"
+require "visual_qrcode"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
