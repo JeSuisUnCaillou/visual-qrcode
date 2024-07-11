@@ -7,6 +7,8 @@ gemspec
 
 gem "rake", "~> 13.0"
 
+gem "guard"
+gem "guard-rspec", require: false
 gem "rspec", "~> 3.0"
 
 gem "rubocop", "~> 1.21"
