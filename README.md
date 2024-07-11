@@ -6,7 +6,9 @@ Visual example of the marianne test :
 
 
 ![image](/spec/images/marianne.png)
++
 ![image](/spec/images/marianne_basic_qrcode.png)
+---
 ![image](/spec/images/marianne_visual_qrcode.png)
 
 ## Installation

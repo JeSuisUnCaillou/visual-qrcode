@@ -3,13 +3,16 @@
 require "rqrcode_core"
 require_relative "image_handler"
 require_relative "export"
+require_relative "pixel_tools"
 
 module VisualQrcode
   class Qrcode
+    include PixelTools
+
     SIZE_MULTIPLIER = 3
     PADDING_MODULES = 6
 
-    attr_reader :content, :basic_qrcode, :vqr_table
+    attr_reader :content, :basic_qrcode
 
     def initialize(content, image_path)
       @content = content
@@ -19,16 +22,16 @@ module VisualQrcode
     end
 
     def make
-      intit_vqr_table
+      intit_vqr_pixels
       resize_image
-      fill_vqr_table
+      fill_vqr_pixels
     end
 
-    def intit_vqr_table
+    def intit_vqr_pixels
       basic_length = @basic_qrcode.modules.length
       @vqr_length = basic_length * SIZE_MULTIPLIER
-      @vqr_table = Array.new @vqr_length
-      @vqr_table.each_index { |i| @vqr_table[i] = Array.new @vqr_length }
+      @vqr_pixels = Array.new @vqr_length
+      @vqr_pixels.each_index { |i| @vqr_pixels[i] = Array.new @vqr_length }
     end
 
     def resize_image
@@ -36,26 +39,17 @@ module VisualQrcode
       @image_handler.resize(@vqr_length, padding_size)
     end
 
-    def fill_vqr_table
+    def fill_vqr_pixels
       @basic_qrcode.modules.each_with_index do |module_row, x_index|
         module_row.each_index do |y_index|
           fill_vqr_pixel(x_index, y_index)
         end
       end
-      @vqr_table
-    end
-
-    def as_text(dark: "x", light: " ")
-      @vqr_table.map do |row|
-        row.map do |pixel|
-          is_light = pixel.nil? || pixel.sum < max_depth * 3
-          is_light ? light : dark
-        end.join
-      end.join("\n")
+      @vqr_pixels
     end
 
     def as_png
-      VisualQrcode::Export.new(@vqr_table).as_png(@vqr_length, @vqr_length)
+      VisualQrcode::Export.new(@vqr_pixels).as_png(@vqr_length, @vqr_length)
     end
 
     def basic_qrcode_as_png
@@ -71,44 +65,35 @@ module VisualQrcode
 
     def fill_vqr_pixel(x_index, y_index)
       if @common_patterns[x_index][y_index].nil?
-        fill_vqr_table_with_image(x_index, y_index)
-        fill_vqr_table_with_module(x_index, y_index)
+        fill_vqr_pixels_with_image(x_index, y_index)
+        fill_vqr_pixels_with_basic_qrcode(x_index, y_index)
       else
-        fill_vqr_table_with_pattern(x_index, y_index)
+        fill_vqr_pixels_with_pattern(x_index, y_index)
       end
     end
 
-    def pixel_of(value)
-      pixel_value = value ? 0 : max_depth
-      [pixel_value, pixel_value, pixel_value, max_depth]
-    end
-
-    def max_depth
-      @max_depth ||= (2**VisualQrcode::PIXEL_DEPTH) - 1
-    end
-
-    def fill_vqr_table_with_module(x_index, y_index)
+    def fill_vqr_pixels_with_basic_qrcode(x_index, y_index)
       multiplied_range_each(x_index, y_index) do |new_x, new_y, x_offset, y_offset|
         if central_offset?(x_offset, y_offset) || @image_handler.pixels[new_x][new_y][3].zero?
           value = @basic_qrcode.modules[x_index][y_index]
-          @vqr_table[new_x][new_y] = pixel_of(value)
+          @vqr_pixels[new_x][new_y] = pixel_of(value)
         end
       end
     end
 
-    def fill_vqr_table_with_image(x_index, y_index)
+    def fill_vqr_pixels_with_image(x_index, y_index)
       multiplied_range_each(x_index, y_index) do |new_x, new_y, x_offset, y_offset|
         next if central_offset?(x_offset, y_offset)
 
         pixel = @image_handler.pixels[new_x][new_y]
-        @vqr_table[new_x][new_y] = pixel
+        @vqr_pixels[new_x][new_y] = pixel
       end
     end
 
-    def fill_vqr_table_with_pattern(x_index, y_index)
+    def fill_vqr_pixels_with_pattern(x_index, y_index)
       multiplied_range_each(x_index, y_index) do |new_x, new_y|
         value = @common_patterns[x_index][y_index]
-        @vqr_table[new_x][new_y] = pixel_of(value)
+        @vqr_pixels[new_x][new_y] = pixel_of(value)
       end
     end
 
