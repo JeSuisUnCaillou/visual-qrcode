@@ -5,7 +5,7 @@ RSpec.describe VisualQrcode::PixelsHandler do
 
   let(:image_name) { "marianne" }
   let(:image_path) { "spec/images/#{image_name}.png" }
-  let(:image_size) { 180 }
+  let(:image_size) { 480 }
 
   it "exposes the image's pixels" do
     expect(image_handler.pixels.length).to eq image_size
