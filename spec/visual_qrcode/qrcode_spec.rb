@@ -135,7 +135,6 @@ RSpec.describe VisualQrcode::Qrcode do
 
   describe "export tests" do
     subject(:export) do
-      visual_qrcode.make
       visual_qrcode.basic_qrcode_as_png.write(basic_qrcode_path)
       visual_qrcode.as_png.write(visual_qrcode_path)
     end

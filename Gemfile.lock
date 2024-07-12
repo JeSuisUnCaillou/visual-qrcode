@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    visual-qrcode (0.1.1)
+    visual-qrcode (0.1.2)
       mini_magick (~> 5)
       rqrcode_core (~> 1.2)
 

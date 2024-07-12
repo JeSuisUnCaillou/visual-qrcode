@@ -6,7 +6,7 @@ Visual example of the marianne test :
 
 
 ![image](/spec/images/marianne.png)
-+
+
 ![image](/spec/images/marianne_basic_qrcode.png)
 ---
 ![image](/spec/images/marianne_visual_qrcode.png)
@@ -23,7 +23,30 @@ If bundler is not being used to manage dependencies, install the gem by executin
 
 ## Usage
 
-TODO: Write usage instructions here
+The basic usage requires a string for the QRCode content and an `image_path` (or `image_url`). **Default size** : 3x the basic QRCode size generated with a high level of error correction.
+
+```ruby
+visual_qr_code = VisualQrcode::Qrcode.new("bonjour", "spec/images/marianne.png")
+
+# Returns a MiniMagick::Image
+image = visual_qr_code.as_png
+
+# MiniMagick::Image has a write method to create an image file
+image.write("./marianne_visual_qrcode.png")
+```
+
+You can also add a size parameter, in pixels. This size can't be smaller than the **Default  size**.
+
+The Visual QRCode will be generated at a mutiple of the **Default size**, and then reduced to the expected size to maintain a good background image quality.
+
+> For example, if the Default size is 140px, and you want a 230px image, it will generate a 280px Visual QRCode and then reduce it to 230px.
+
+```ruby
+visual_qr_code = VisualQrcode::Qrcode.new("bonjour by 280", "spec/images/marianne.png", size: 280)
+
+visual_qrcode.as_png.write("./marianne_visual_qrcode_280x280.png")
+```
+
 
 ## Development
 
@@ -39,7 +62,7 @@ You can also use `bundle exec guard` to run gard and listen to modified files to
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/JeSuisUnCaillou/visual-qrcode.
+Bug reports and pull requests are welcome on GitHub at https://github.com/JeSuisUnCaillou/visual-qrcode/issues.
 
 ## License
 
