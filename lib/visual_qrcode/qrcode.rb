@@ -24,6 +24,21 @@ module VisualQrcode
       @common_patterns = @basic_qrcode.instance_variable_get(:@common_patterns)
     end
 
+    def as_png(margin: default_margin)
+      make
+      VisualQrcode::Export.new(@vqr_pixels).as_png(size: @size, margin: margin)
+    end
+
+    def basic_qrcode_as_png(margin: default_margin)
+      make
+      basic_qrcode_pixels = @basic_qrcode.modules.map do |module_row|
+        pixels_row = module_row.map { |value| [pixel_of(value)] * PIXELS_PER_MODULE }.flatten
+        ([pixels_row] * PIXELS_PER_MODULE)
+      end.flatten(1)
+
+      VisualQrcode::Export.new(basic_qrcode_pixels).as_png(size: @size, margin: margin)
+    end
+
     def make
       intit_vqr_pixels
       resize_image
@@ -46,20 +61,6 @@ module VisualQrcode
           fill_vqr_module(x_index, y_index)
         end
       end
-      @vqr_pixels
-    end
-
-    def as_png(margin: default_margin)
-      VisualQrcode::Export.new(@vqr_pixels).as_png(size: @size, margin: margin)
-    end
-
-    def basic_qrcode_as_png(margin: default_margin)
-      basic_qrcode_pixels = @basic_qrcode.modules.map do |module_row|
-        pixels_row = module_row.map { |value| [pixel_of(value)] * PIXELS_PER_MODULE }.flatten
-        ([pixels_row] * PIXELS_PER_MODULE)
-      end.flatten(1)
-
-      VisualQrcode::Export.new(basic_qrcode_pixels).as_png(size: @size, margin: margin)
     end
 
     private
