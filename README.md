@@ -29,7 +29,8 @@ If bundler is not being used to manage dependencies, install the gem by executin
 
 ## Usage
 
-The basic usage requires a string for the QRCode content and an `image_path` (or `image_url`). **Default size** : 3x the basic QRCode size generated with a high level of error correction.
+The basic usage requires a string for the QRCode content and an `image_path` (or `image_url`).
+**Default size** : 3x the basic QRCode size generated with a high level of error correction.
 
 ```ruby
 visual_qr_code = VisualQrcode::Qrcode.new("bonjour", "spec/images/marianne.png")
@@ -41,7 +42,7 @@ image = visual_qr_code.as_png
 image.write("./marianne_visual_qrcode.png")
 ```
 
-You can also add a size parameter, in pixels. This size can't be smaller than the **Default  size**.
+You can also add a size parameter, in pixels. This size can't be smaller than the **default  size**.
 
 ```ruby
 visual_qr_code = VisualQrcode::Qrcode.new("bonjour by 280", "spec/images/marianne.png", size: 280)
@@ -57,7 +58,7 @@ In order to have a nice visual, a padding is added on the image to keep it insid
 
 ### Resize method
 
-The Visual QRCode will be generated at a mutiple of the **Default size**, and then reduced to the expected size to maintain a good background image quality.
+The Visual QRCode will be generated at a mutiple of the **default size**, and then reduced to the expected size to maintain a good background image quality.
 
 > For example, if the Default size is 140px, and you want a 230px image, it will generate a 280px Visual QRCode and then reduce it to 230px.
 
