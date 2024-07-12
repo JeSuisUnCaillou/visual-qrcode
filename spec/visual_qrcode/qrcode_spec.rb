@@ -3,13 +3,22 @@
 require "mini_magick"
 
 RSpec.describe VisualQrcode::Qrcode do
-  subject(:visual_qrcode) { described_class.new(text, image_path, size: size, padding_modules: padding_modules) }
+  subject(:visual_qrcode) do
+    described_class.new(
+      text, 
+      image_path, 
+      size: size, 
+      padding_modules: padding_modules,
+      qr_size: qr_size
+    )
+  end
 
   let(:text) { "Taataaaa Yoyoyooooo ! Qu'est-ce que tu caches sous ton grand chapeauuuuuu !" }
   let(:image_name) { "marianne" }
   let(:image_path) { "spec/images/#{image_name}.png" }
   let(:size) { nil }
   let(:padding_modules) { nil }
+  let(:qr_size) { nil }
   let(:basic_modules_lenth) { visual_qrcode.basic_qrcode.modules.length }
 
   it "exposes a basic qrcode" do
@@ -159,9 +168,10 @@ RSpec.describe VisualQrcode::Qrcode do
       end
     end
 
-    context "with the zidane qr code" do
+    context "with the zidane qr code with a qr_size" do
       let(:image_name) { "zidane" }
       let(:text) { "Allez zizou" }
+      let(:qr_size) { 10 }
 
       it "generates a visual qr code of zidane" do
         expect { export }.to(change { File.mtime(qrcode_path) })
