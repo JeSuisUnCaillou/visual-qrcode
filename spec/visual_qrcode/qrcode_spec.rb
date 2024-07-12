@@ -160,7 +160,7 @@ RSpec.describe VisualQrcode::Qrcode do
 
       let(:size) { 300 }
       let(:leaf_image_path) { "spec/images/leaf.png" }
-      let(:visual_qrcode_leaf) { described_class.new(text, leaf_image_path, size: size) }
+      let(:visual_qrcode_leaf) { described_class.new("This is a leaf. Yeah. Big surprise, isn't it ?", leaf_image_path, size: size) }
       let(:leaf_visual_qrcode_path) { "spec/images/leaf_visual_qrcode.png" }
 
       it "generates a visual qr code of leaf" do
