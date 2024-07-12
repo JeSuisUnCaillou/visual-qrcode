@@ -21,6 +21,15 @@ If bundler is not being used to manage dependencies, install the gem by executin
 
     $ gem install visual-qrcode
 
+## Dependencies
+
+`visual-qrcode` depends on two gems :
+
+- [rqrcode_core](https://github.com/whomwah/rqrcode_core)
+- [mini_magick](https://github.com/minimagick/minimagick)
+
+> Make sur that you have the `ImageMagick` CLI installed on your computer to use `mini_magick`. See its [requirements](https://github.com/minimagick/minimagick?tab=readme-ov-file#requirements)
+
 ## Usage
 
 The basic usage requires a string for the QRCode content and an `image_path` (or `image_url`). **Default size** : 3x the basic QRCode size generated with a high level of error correction.
