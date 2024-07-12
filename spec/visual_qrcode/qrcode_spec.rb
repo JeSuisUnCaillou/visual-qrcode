@@ -5,9 +5,9 @@ require "mini_magick"
 RSpec.describe VisualQrcode::Qrcode do
   subject(:visual_qrcode) do
     described_class.new(
-      text, 
-      image_path, 
-      size: size, 
+      text,
+      image_path,
+      size: size,
       padding_modules: padding_modules,
       qr_size: qr_size
     )
@@ -144,11 +144,11 @@ RSpec.describe VisualQrcode::Qrcode do
   end
 
   describe "export tests" do
-    let(:qrcode_path) { "spec/images/#{image_name}_visual_qrcode.png" }
-
     subject(:export) do
       visual_qrcode.as_png.write(qrcode_path)
     end
+
+    let(:qrcode_path) { "spec/images/#{image_name}_visual_qrcode.png" }
 
     context "with the marianne qr code and a size of 300" do
       let(:size) { 300 }

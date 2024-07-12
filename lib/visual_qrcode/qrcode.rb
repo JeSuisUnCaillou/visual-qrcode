@@ -59,13 +59,11 @@ module VisualQrcode
 
     def initialize_basic_qr_code_and_qr_size(content)
       @basic_qrcode = RQRCodeCore::QRCode.new(content, level: :h, size: @qr_size)
-    rescue RQRCodeCore::QRCodeRunTimeError => error
-      if error.message =~ /^code length overflow./
-        @qr_size = @qr_size + 1
-        initialize_basic_qr_code_and_qr_size(content)
-      else
-        raise error
-      end
+    rescue RQRCodeCore::QRCodeRunTimeError => e
+      raise e unless e.message =~ /^code length overflow./
+
+      @qr_size += 1
+      initialize_basic_qr_code_and_qr_size(content)
     end
 
     def default_margin
