@@ -6,7 +6,7 @@ RSpec.describe VisualQrcode::Export do
   let(:pixels) { [[[255, 255, 255, 255]]] }
 
   describe "#as_png" do
-    subject(:as_png) { export.as_png(1, 1) }
+    subject(:as_png) { export.as_png }
 
     it "creates a png of the visual qrcode" do
       expect(as_png).to be_a MiniMagick::Image

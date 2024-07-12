@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "rqrcode_core"
-require_relative "image_handler"
+require_relative "pixels_handler"
 require_relative "export"
 require_relative "pixel_tools"
 
@@ -10,13 +10,13 @@ module VisualQrcode
     include PixelTools
 
     SIZE_MULTIPLIER = 3
-    PADDING_MODULES = 6
+    PADDING_MODULES = 7
 
     attr_reader :content, :basic_qrcode
 
     def initialize(content, image_path)
       @content = content
-      @image_handler = VisualQrcode::ImageHandler.new(image_path)
+      @image_handler = VisualQrcode::PixelsHandler.new(image_path: image_path)
       @basic_qrcode = RQRCodeCore::QRCode.new(content, level: :h)
       @common_patterns = @basic_qrcode.instance_variable_get(:@common_patterns)
     end
@@ -36,7 +36,7 @@ module VisualQrcode
 
     def resize_image
       padding_size = PADDING_MODULES * SIZE_MULTIPLIER
-      @image_handler.resize(@vqr_length, padding_size)
+      @image_handler.resize_with_padding(@vqr_length, padding_size)
     end
 
     def fill_vqr_pixels
@@ -49,7 +49,7 @@ module VisualQrcode
     end
 
     def as_png
-      VisualQrcode::Export.new(@vqr_pixels).as_png(@vqr_length, @vqr_length)
+      VisualQrcode::Export.new(@vqr_pixels).as_png
     end
 
     def basic_qrcode_as_png
@@ -58,7 +58,7 @@ module VisualQrcode
         ([pixels_row] * SIZE_MULTIPLIER)
       end.flatten(1)
 
-      VisualQrcode::Export.new(basic_qrcode_pixels).as_png(basic_qrcode_pixels.length, basic_qrcode_pixels.length)
+      VisualQrcode::Export.new(basic_qrcode_pixels).as_png
     end
 
     private
