@@ -11,13 +11,14 @@ module VisualQrcode
     include PixelTools
     include ModuleFiller
 
-    PADDING_MODULES = 7
+    DEFAULT_PADDING_MODULES = 7
 
     attr_reader :content, :basic_qrcode, :image_handler, :vqr_pixels
 
-    def initialize(content, image_path, size: nil)
+    def initialize(content, image_path, size: nil, padding_modules: nil)
       @content = content
       @size = size
+      @padding_modules = padding_modules || DEFAULT_PADDING_MODULES
 
       @basic_qrcode = RQRCodeCore::QRCode.new(content, level: :h)
       @image_handler = VisualQrcode::PixelsHandler.new(image_path: image_path)
@@ -27,16 +28,6 @@ module VisualQrcode
     def as_png(margin: default_margin)
       make
       VisualQrcode::Export.new(@vqr_pixels).as_png(size: @size, margin: margin)
-    end
-
-    def basic_qrcode_as_png(margin: default_margin)
-      make
-      basic_qrcode_pixels = @basic_qrcode.modules.map do |module_row|
-        pixels_row = module_row.map { |value| [pixel_of(value)] * PIXELS_PER_MODULE }.flatten
-        ([pixels_row] * PIXELS_PER_MODULE)
-      end.flatten(1)
-
-      VisualQrcode::Export.new(basic_qrcode_pixels).as_png(size: @size, margin: margin)
     end
 
     def make
@@ -51,7 +42,7 @@ module VisualQrcode
     end
 
     def resize_image
-      padding_size = PADDING_MODULES * module_size
+      padding_size = @padding_modules * module_size
       @image_handler.resize_with_padding(@vqr_length, padding_size)
     end
 
