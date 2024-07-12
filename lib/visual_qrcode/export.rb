@@ -12,11 +12,13 @@ module VisualQrcode
       @pixels_handler = PixelsHandler.new(pixels: pixels)
     end
 
-    def as_png(margin: 6)
-      add_margin(margin)
-      dimensions = [@pixels_handler.size] * 2
+    def as_png(size: nil, margin: 6)
+      @pixels_handler.add_margin(margin, color: :white)
       image = MiniMagick::Image.get_image_from_pixels(pixels, dimensions, "RGBA", PIXEL_DEPTH, "png")
-      image.resize dimensions.map { |d| d * 2 }.join("x")
+
+      image.resize "#{size}x#{size}" if size
+
+      image
     end
 
     def as_text(dark: "x", light: " ")
@@ -28,12 +30,12 @@ module VisualQrcode
       end.join("\n")
     end
 
-    def add_margin(margin)
-      @pixels_handler.add_margin(margin, color: :white)
-    end
-
     def pixels
       @pixels_handler.pixels
+    end
+
+    def dimensions
+      @pixels_handler.dimensions
     end
   end
 end

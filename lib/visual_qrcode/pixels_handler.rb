@@ -22,6 +22,10 @@ module VisualQrcode
       @pixels.length
     end
 
+    def dimensions
+      [size] * 2
+    end
+
     def resize_with_padding(new_size, padding)
       padded_size = new_size - (2 * padding)
       resize(padded_size)
