@@ -47,21 +47,42 @@ image = visual_qr_code.as_png
 image.write("./marianne_visual_qrcode.png")
 ```
 
-**Default size** : Because we need 9 pixels in each QR Code module, the **minimum size** is **3x the minimum basic QRCode size**  with a **high level of error correction**. It varies with the amount of content you want to encode in the QR Code.
+**Default size** : Because we need 9 pixels in each QR Code module, the **minimum size** is **3x the minimum basic QRCode size**  with a high level of error correction. It varies with the amount of content you want to encode in the QR Code.
 
-You can also add a size parameter, in pixels. This size can't be smaller than the **minimim  size**.
+You can also add a size parameter, in pixels. This size can't be smaller than the **minimum  size**.
 
 ```ruby
-visual_qr_code = VisualQrcode::Qrcode.new("bonjour by 280", "spec/images/marianne.png", size: 280)
+visual_qr_code = VisualQrcode::Qrcode.new(
+    "bonjour by 280", 
+    "spec/images/marianne.png", 
+    size: 280
+)
 
 visual_qrcode.as_png.write("./marianne_visual_qrcode_280x280.png")
 ```
+
+If you choose a size too small, you'll get an error informing you of the minimum size necessary for your content.
 
 ## Design choices
 
 ### Padding
 
-In order to have a nice visual, a padding is added on the image to keep it inside of the QRCode guide patterns. Also it helps to reckognize that the image _is_ a scannable QRCode and not just some random image.
+In order to have a nice visual, a padding is added on the image to keep it inside of the QRCode line patterns on top and on the left. Also it helps to reckognize that the image _is_ a scannable QRCode and not just some random image.
+
+**By default, the padding is equal to 7 modules.**
+
+If your image has enough transparency to dodge the QRCode lines, you can remove the padding with the `padding_modules: 0` option.
+
+```ruby
+visual_qr_code = VisualQrcode::Qrcode.new(
+    "My leaf don't need no padding, it's a strong and independant leaf",
+    "spec/images/leaf.png", 
+    size: 280, 
+    padding_modules: 0
+)
+```
+
+You can also customize the padding if you want more or less modules than the default value.
 
 ### Resize method
 
