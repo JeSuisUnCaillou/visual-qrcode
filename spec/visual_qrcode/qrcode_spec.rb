@@ -3,12 +3,22 @@
 require "mini_magick"
 
 RSpec.describe VisualQrcode::Qrcode do
-  subject(:visual_qrcode) { described_class.new(text, image_path, size: size) }
+  subject(:visual_qrcode) do
+    described_class.new(
+      text,
+      image_path,
+      size: size,
+      padding_modules: padding_modules,
+      qr_size: qr_size
+    )
+  end
 
   let(:text) { "Taataaaa Yoyoyooooo ! Qu'est-ce que tu caches sous ton grand chapeauuuuuu !" }
   let(:image_name) { "marianne" }
   let(:image_path) { "spec/images/#{image_name}.png" }
   let(:size) { nil }
+  let(:padding_modules) { nil }
+  let(:qr_size) { nil }
   let(:basic_modules_lenth) { visual_qrcode.basic_qrcode.modules.length }
 
   it "exposes a basic qrcode" do
@@ -134,37 +144,37 @@ RSpec.describe VisualQrcode::Qrcode do
   end
 
   describe "export tests" do
-    context "with the marianne qr code" do
-      subject(:export) do
-        visual_qrcode.basic_qrcode_as_png.write(basic_qrcode_path)
-        visual_qrcode.as_png.write(visual_qrcode_path)
-      end
+    subject(:export) do
+      visual_qrcode.as_png.write(qrcode_path)
+    end
 
+    let(:qrcode_path) { "spec/images/#{image_name}_visual_qrcode.png" }
+
+    context "with the marianne qr code and a size of 300" do
       let(:size) { 300 }
-      let(:basic_qrcode_path) { "spec/images/#{image_name}_basic_qrcode.png" }
-      let(:visual_qrcode_path) { "spec/images/#{image_name}_visual_qrcode.png" }
-
-      it "generates a basic qr code" do
-        expect { export }.to(change { File.mtime(basic_qrcode_path) })
-      end
 
       it "generates a visual qr code of marianne" do
-        expect { export }.to(change { File.mtime(visual_qrcode_path) })
+        expect { export }.to(change { File.mtime(qrcode_path) })
       end
     end
 
-    context "with the leaf qr code" do
-      subject(:export) do
-        visual_qrcode_leaf.as_png.write(leaf_visual_qrcode_path)
-      end
-
-      let(:size) { 300 }
-      let(:leaf_image_path) { "spec/images/leaf.png" }
-      let(:visual_qrcode_leaf) { described_class.new(text, leaf_image_path, size: size) }
-      let(:leaf_visual_qrcode_path) { "spec/images/leaf_visual_qrcode.png" }
+    context "with the leaf qr code and no padding modules" do
+      let(:padding_modules) { 0 }
+      let(:image_name) { "leaf" }
+      let(:text) { "This is a leaf. Yeah. Big surprise, isn't it ?" }
 
       it "generates a visual qr code of leaf" do
-        expect { export }.to(change { File.mtime(leaf_visual_qrcode_path) })
+        expect { export }.to(change { File.mtime(qrcode_path) })
+      end
+    end
+
+    context "with the zidane qr code with a qr_size" do
+      let(:image_name) { "zidane" }
+      let(:text) { "Allez zizou" }
+      let(:qr_size) { 10 }
+
+      it "generates a visual qr code of zidane" do
+        expect { export }.to(change { File.mtime(qrcode_path) })
       end
     end
   end
