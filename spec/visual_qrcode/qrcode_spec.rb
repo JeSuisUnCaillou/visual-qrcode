@@ -151,7 +151,7 @@ RSpec.describe VisualQrcode::Qrcode do
     let(:qrcode_path) { "spec/images/#{image_name}_visual_qrcode.png" }
 
     context "with the marianne qr code and a size of 300" do
-      let(:size) { 300 }
+      let(:size) { 260 }
 
       it "generates a visual qr code of marianne" do
         expect { export }.to(change { File.mtime(qrcode_path) })
@@ -162,6 +162,7 @@ RSpec.describe VisualQrcode::Qrcode do
       let(:padding_modules) { 0 }
       let(:image_name) { "leaf" }
       let(:text) { "This is a leaf. Yeah. Big surprise, isn't it ?" }
+      let(:size) { 260 }
 
       it "generates a visual qr code of leaf" do
         expect { export }.to(change { File.mtime(qrcode_path) })
@@ -171,7 +172,8 @@ RSpec.describe VisualQrcode::Qrcode do
     context "with the zidane qr code with a qr_size" do
       let(:image_name) { "zidane" }
       let(:text) { "Allez zizou" }
-      let(:qr_size) { 10 }
+      let(:qr_size) { 15 }
+      let(:size) { 260 }
 
       it "generates a visual qr code of zidane" do
         expect { export }.to(change { File.mtime(qrcode_path) })
