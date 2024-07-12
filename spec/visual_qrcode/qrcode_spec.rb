@@ -135,31 +135,36 @@ RSpec.describe VisualQrcode::Qrcode do
   end
 
   describe "export tests" do
-    context "with the marianne qr code and a size of 300" do
-      subject(:export) do
-        visual_qrcode.as_png.write(visual_qrcode_path)
-      end
+    let(:qrcode_path) { "spec/images/#{image_name}_visual_qrcode.png" }
 
+    subject(:export) do
+      visual_qrcode.as_png.write(qrcode_path)
+    end
+
+    context "with the marianne qr code and a size of 300" do
       let(:size) { 300 }
-      let(:visual_qrcode_path) { "spec/images/#{image_name}_visual_qrcode.png" }
 
       it "generates a visual qr code of marianne" do
-        expect { export }.to(change { File.mtime(visual_qrcode_path) })
+        expect { export }.to(change { File.mtime(qrcode_path) })
       end
     end
 
     context "with the leaf qr code and no padding modules" do
-      subject(:export) do
-        visual_qrcode.as_png.write(visual_qrcode_path)
-      end
-
       let(:padding_modules) { 0 }
       let(:image_name) { "leaf" }
       let(:text) { "This is a leaf. Yeah. Big surprise, isn't it ?" }
-      let(:visual_qrcode_path) { "spec/images/leaf_visual_qrcode.png" }
 
       it "generates a visual qr code of leaf" do
-        expect { export }.to(change { File.mtime(visual_qrcode_path) })
+        expect { export }.to(change { File.mtime(qrcode_path) })
+      end
+    end
+
+    context "with the zidane qr code" do
+      let(:image_name) { "zidane" }
+      let(:text) { "Allez zizou" }
+
+      it "generates a visual qr code of zidane" do
+        expect { export }.to(change { File.mtime(qrcode_path) })
       end
     end
   end
