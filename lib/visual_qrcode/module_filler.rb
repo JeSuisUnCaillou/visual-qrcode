@@ -16,7 +16,7 @@ module ModuleFiller
 
   def fill_vqr_module_with_basic_qrcode(x_index, y_index)
     multiplied_range_each(x_index, y_index) do |new_x, new_y, x_offset, y_offset|
-      if central_pixel?(x_offset, y_offset) || @image_handler.pixels[new_x][new_y][3].zero?
+      if central_pixel?(x_offset, y_offset) || @pixels_handler.pixels[new_x][new_y][3].zero?
         value = @basic_qrcode.modules[x_index][y_index]
         @vqr_pixels[new_x][new_y] = pixel_of(value)
       end
@@ -27,7 +27,7 @@ module ModuleFiller
     multiplied_range_each(x_index, y_index) do |new_x, new_y, x_offset, y_offset|
       next if central_pixel?(x_offset, y_offset)
 
-      pixel = @image_handler.pixels[new_x][new_y]
+      pixel = @pixels_handler.pixels[new_x][new_y]
       @vqr_pixels[new_x][new_y] = pixel
     end
   end

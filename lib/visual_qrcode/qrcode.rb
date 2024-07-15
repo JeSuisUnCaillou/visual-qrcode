@@ -13,7 +13,7 @@ module VisualQrcode
 
     DEFAULT_PADDING_MODULES = 7
 
-    attr_reader :content, :basic_qrcode, :image_handler, :vqr_pixels
+    attr_reader :content, :basic_qrcode, :pixels_handler, :vqr_pixels
 
     def initialize(content, image_path, size: nil, padding_modules: nil, qr_size: nil)
       @content = content
@@ -22,7 +22,7 @@ module VisualQrcode
       @qr_size = qr_size || 6
 
       initialize_basic_qr_code_and_qr_size(content)
-      @image_handler = VisualQrcode::PixelsHandler.new(image_path: image_path)
+      @pixels_handler = VisualQrcode::PixelsHandler.new(image_path: image_path)
       @common_patterns = @basic_qrcode.instance_variable_get(:@common_patterns)
     end
 
@@ -44,7 +44,7 @@ module VisualQrcode
 
     def resize_image
       padding_size = @padding_modules * module_size
-      @image_handler.resize_with_padding(@vqr_length, padding_size)
+      @pixels_handler.resize_with_padding(@vqr_length, padding_size)
     end
 
     def fill_vqr_pixels
