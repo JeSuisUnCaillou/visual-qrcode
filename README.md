@@ -109,7 +109,7 @@ The Visual QRCode will be generated at a mutiple of the **minimum size**, and th
 
 The minimum [size of RQRCodeCore](https://github.com/whomwah/rqrcode_core/tree/master?tab=readme-ov-file#options) used is 6 by default, to get enough space for the image to be visible inside the Visual QRCode.
 
-But you can force it to a lower value if you want.
+But you can force it to a lower value if you want, with the `qr_size` option.
 
 ## Development
 
