@@ -65,14 +65,14 @@ RSpec.describe VisualQrcode::Qrcode do
     end
 
     it "resizes the image 3 times larger than the basic qr_code modules" do
-      expect { resize_image }.to change { visual_qrcode.image_handler.size }.to basic_modules_lenth * 3
+      expect { resize_image }.to change { visual_qrcode.pixels_handler.size }.to basic_modules_lenth * 3
     end
 
     context "with a size parameter at least 3 times larger than minimum" do
       let(:size) { 300 }
 
       it "resizes the image 9 times larger than the basic qr_code modules" do
-        expect { resize_image }.to change { visual_qrcode.image_handler.size }.to basic_modules_lenth * 9
+        expect { resize_image }.to change { visual_qrcode.pixels_handler.size }.to basic_modules_lenth * 9
       end
     end
   end

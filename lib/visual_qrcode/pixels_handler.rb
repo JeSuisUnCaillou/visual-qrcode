@@ -14,6 +14,8 @@ module VisualQrcode
         @pixels = pixels
       else
         @image = MiniMagick::Image.open(image_path)
+        raise "Image should be a square" if @image.width != @image.height
+
         set_pixels_from_image
       end
     end
