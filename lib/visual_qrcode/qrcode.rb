@@ -15,13 +15,13 @@ module VisualQrcode
 
     attr_reader :content, :basic_qrcode, :pixels_handler, :vqr_pixels
 
-    def initialize(content, image_path, size: nil, padding_modules: nil, qr_size: nil)
+    def initialize(content, image_path, size: nil, padding_modules: nil, minimum_qr_size: nil)
       @content = content
       @size = size
       @padding_modules = padding_modules || DEFAULT_PADDING_MODULES
-      @qr_size = qr_size || 6
+      @minimum_qr_size = minimum_qr_size || 6
 
-      initialize_basic_qr_code_and_qr_size(content)
+      initialize_basic_qr_code_and_minimum_qr_size(content)
       @pixels_handler = VisualQrcode::PixelsHandler.new(image_path: image_path)
       @common_patterns = @basic_qrcode.instance_variable_get(:@common_patterns)
     end
@@ -57,13 +57,13 @@ module VisualQrcode
 
     private
 
-    def initialize_basic_qr_code_and_qr_size(content)
-      @basic_qrcode = RQRCodeCore::QRCode.new(content, level: :h, size: @qr_size)
+    def initialize_basic_qr_code_and_minimum_qr_size(content)
+      @basic_qrcode = RQRCodeCore::QRCode.new(content, level: :h, size: @minimum_qr_size)
     rescue RQRCodeCore::QRCodeRunTimeError => e
       raise e unless e.message =~ /^code length overflow./
 
-      @qr_size += 1
-      initialize_basic_qr_code_and_qr_size(content)
+      @minimum_qr_size += 1
+      initialize_basic_qr_code_and_minimum_qr_size(content)
     end
 
     def default_margin

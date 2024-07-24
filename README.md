@@ -40,7 +40,8 @@ The basic usage requires a string for the QRCode content and an `image_path` (or
 ```ruby
 visual_qr_code = VisualQrcode::Qrcode.new(
     "This is the sentence that will read in the QR Code",
-    "spec/images/marianne.png"
+    "spec/images/marianne.png",
+    size: 260
 )
 
 # Returns a MiniMagick::Image
@@ -50,54 +51,12 @@ image = visual_qr_code.as_png
 image.write("./marianne_visual_qrcode.png")
 ```
 
-**Default size** : Because we need 9 pixels in each QR Code module, the **minimum size** is **3x the minimum basic QRCode size**  with a high level of error correction. It varies with the amount of content you want to encode in the QR Code.
+> **Default size** : Because we need 9 pixels in each QR Code module, the **minimum size** is **3x the minimum basic QRCode size**  (with a `:high` level of [error correction](https://github.com/whomwah/rqrcode_core/tree/master?tab=readme-ov-file#options)). It varies with the amount of content you want to encode in the QR Code.
+> 
+> If you choose a size too small, you'll get an error informing you of the minimum size necessary for your content.
 
-You can also add a size parameter, in pixels. This size can't be smaller than the **minimum  size**.
-
-```ruby
-visual_qr_code = VisualQrcode::Qrcode.new(
-    "https://www.ruby-lang.org/", 
-    "spec/images/ruby.png", 
-    size: 280
-)
-
-visual_qrcode.as_png.write("./ruby_visual_qrcode_280x280.png")
-```
-
-If you choose a size too small, you'll get an error informing you of the minimum size necessary for your content.
-
-If your content is small and produces a QR Code of small size (big patterns, few modules), you can increase the amount of modules with the `qr_size` parameter. It corresponds to the [size option of RQRCodeCore](https://github.com/whomwah/rqrcode_core/tree/master?tab=readme-ov-file#options)
-
-```ruby
-visual_qr_code = VisualQrcode::Qrcode.new(
-    "small content", 
-    "spec/images/zidane.png", 
-    qr_size: 10
-)
-
-visual_qrcode.as_png.write("./zidane_visual_qrcode_size_10.png")
-```
 
 ## Design choices
-
-### Padding
-
-In order to have a nice visual, a padding is added on the image to keep it inside of the QRCode line patterns on top and on the left. Also it helps to reckognize that the image _is_ a scannable QRCode and not just some random image.
-
-**By default, the padding is equal to 7 modules.**
-
-If your image has enough transparency to dodge the QRCode lines, you can remove the padding with the `padding_modules: 0` option.
-
-```ruby
-visual_qr_code = VisualQrcode::Qrcode.new(
-    "My ruby don't need no padding, it's a strong and independant ruby",
-    "spec/images/ruby.png", 
-    size: 280, 
-    padding_modules: 0
-)
-```
-
-You can also customize the padding if you want more or less modules than the default value.
 
 ### Resize method
 
@@ -105,11 +64,43 @@ The Visual QRCode will be generated at a mutiple of the **minimum size**, and th
 
 > For example, if the minimum size is 140px, and you want a 230px image, it will generate a 280px Visual QRCode and then reduce it to 230px.
 
+Because of that, it is recommended to provide an image bigger than the expected size, to not be made blurry by the resize. You can't go wrong with an image twice as big as the size of the wanted result.
+
+### Padding
+
+In order to have a nice visual, a padding is added on the image to keep it inside of the QRCode line patterns on top and on the left. Also it helps to reckognize that the image _is_ a scannable QRCode by keeping some of the well-known patterns of the QR Code in the padding.
+
+**By default, the padding is equal to 7 modules.**
+
+If your image has enough transparency to dodge the QRCode lines, you can remove the padding with the `padding_modules: 0` option.
+
+```ruby
+visual_qr_code = VisualQrcode::Qrcode.new(
+    "https://en.wikipedia.org/wiki/Zinedine_Zidane",
+    "spec/images/zidane.png", 
+    size: 260, 
+    padding_modules: 0
+)
+```
+
+You can also customize the padding if you want more or less modules than the default value.
+
 ### QRCode minimum Size
 
 The minimum [size of RQRCodeCore](https://github.com/whomwah/rqrcode_core/tree/master?tab=readme-ov-file#options) used is 6 by default, to get enough space for the image to be visible inside the Visual QRCode.
 
-But you can force it to a lower value if you want, with the `qr_size` option.
+You can increase the amount of modules with the `minimum_qr_size` parameter. It corresponds to the [size option of RQRCodeCore](https://github.com/whomwah/rqrcode_core/tree/master?tab=readme-ov-file#options)
+
+```ruby
+visual_qr_code = VisualQrcode::Qrcode.new(
+    "small content", 
+    "spec/images/zidane.png", 
+    size: 260,
+    minimum_qr_size: 15
+)
+```
+
+You can also force it to a lower value if you want. But it will always be incremented until finding a suitable value for your content size.
 
 ## Development
 
