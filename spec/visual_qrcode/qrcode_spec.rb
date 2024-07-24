@@ -158,10 +158,10 @@ RSpec.describe VisualQrcode::Qrcode do
       end
     end
 
-    context "with the ruby qr code and no padding modules" do
-      let(:padding_modules) { 0 }
+    context "with the ruby qr code with a qr_size" do
       let(:image_name) { "ruby" }
       let(:text) { "https://www.ruby-lang.org/" }
+      let(:qr_size) { 15 }
       let(:size) { 260 }
 
       it "generates a visual qr code of leaf" do
@@ -169,9 +169,10 @@ RSpec.describe VisualQrcode::Qrcode do
       end
     end
 
-    context "with the zidane qr code with a qr_size" do
+    context "with the zidane qr code with a qr_size and padding modules" do
       let(:image_name) { "zidane" }
       let(:text) { "Allez zizou" }
+      let(:padding_modules) { 0 }
       let(:qr_size) { 15 }
       let(:size) { 260 }
 
