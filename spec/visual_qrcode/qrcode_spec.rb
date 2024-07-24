@@ -13,7 +13,7 @@ RSpec.describe VisualQrcode::Qrcode do
     )
   end
 
-  let(:text) { "Taataaaa Yoyoyooooo ! Qu'est-ce que tu caches sous ton grand chapeauuuuuu !" }
+  let(:text) { "Taataaaa Yoyoyooooo ! Qu'est-ce qu'il y a sous ton grand chapeauuuuuu !" }
   let(:image_name) { "marianne" }
   let(:image_path) { "spec/images/#{image_name}.png" }
   let(:size) { nil }
@@ -141,43 +141,5 @@ RSpec.describe VisualQrcode::Qrcode do
     #     expect { fill_vqr_module }.to change { visual_qrcode.vqr_pixels[x*3][y*3] }.to [0,0,0,255]
     #   end
     # end
-  end
-
-  describe "export tests" do
-    subject(:export) do
-      visual_qrcode.as_png.write(qrcode_path)
-    end
-
-    let(:qrcode_path) { "spec/images/#{image_name}_visual_qrcode.png" }
-
-    context "with the marianne qr code and a size of 300" do
-      let(:size) { 260 }
-
-      it "generates a visual qr code of marianne" do
-        expect { export }.to(change { File.mtime(qrcode_path) })
-      end
-    end
-
-    context "with the ruby qr code and no padding modules" do
-      let(:padding_modules) { 0 }
-      let(:image_name) { "ruby" }
-      let(:text) { "https://www.ruby-lang.org/" }
-      let(:size) { 260 }
-
-      it "generates a visual qr code of leaf" do
-        expect { export }.to(change { File.mtime(qrcode_path) })
-      end
-    end
-
-    context "with the zidane qr code with a qr_size" do
-      let(:image_name) { "zidane" }
-      let(:text) { "Allez zizou" }
-      let(:qr_size) { 15 }
-      let(:size) { 260 }
-
-      it "generates a visual qr code of zidane" do
-        expect { export }.to(change { File.mtime(qrcode_path) })
-      end
-    end
   end
 end

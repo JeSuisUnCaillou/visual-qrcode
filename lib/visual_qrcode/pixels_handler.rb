@@ -14,8 +14,6 @@ module VisualQrcode
         @pixels = pixels
       else
         @image = MiniMagick::Image.open(image_path)
-        raise "Image should be a square" if @image.width != @image.height
-
         set_pixels_from_image
       end
     end
@@ -37,6 +35,7 @@ module VisualQrcode
     def resize(new_size)
       image.resize "#{new_size}x#{new_size}"
       set_pixels_from_image
+      make_square
     end
 
     def add_margin(margin, color: :transparent)
@@ -51,7 +50,41 @@ module VisualQrcode
       @pixels = col_margin + margined_rows + col_margin
     end
 
+    def make_square
+      max_size = [@pixels.length, @pixels.first.length].max
+
+      if @pixels.length < max_size
+        add_transparent_columns_to_size(max_size)
+      elsif @pixels.first.length < max_size
+        add_transparent_rows_to_size(max_size)
+      end
+    end
+
     private
+
+    def add_transparent_columns_to_size(max_size)
+      size_difference = max_size - @pixels.length
+      margin = size_difference / 2
+      rest_of_margin = size_difference % 2
+
+      left_col_margin = [Array.new(max_size, transparent_pixel)] * margin
+      right_col_margin = [Array.new(max_size, transparent_pixel)] * (margin + rest_of_margin)
+
+      @pixels = left_col_margin + @pixels + right_col_margin
+    end
+
+    def add_transparent_rows_to_size(max_size)
+      size_difference = max_size - @pixels.first.length
+      margin = size_difference / 2
+      rest_of_margin = size_difference % 2
+
+      left_row_margin = [transparent_pixel] * margin
+      right_row_margin = [transparent_pixel] * (margin + rest_of_margin)
+
+      @pixels = @pixels.map do |row|
+        left_row_margin + row + right_row_margin
+      end
+    end
 
     def set_pixels_from_image
       @pixels = @image.get_pixels("RGBA")

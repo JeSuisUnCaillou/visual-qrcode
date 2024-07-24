@@ -5,18 +5,9 @@ RSpec.describe VisualQrcode::PixelsHandler do
 
   let(:image_name) { "marianne" }
   let(:image_path) { "spec/images/#{image_name}.png" }
-  let(:image_size) { 480 }
 
   it "exposes the image's pixels" do
-    expect(pixels_handler.pixels.length).to eq image_size
-  end
-
-  context "with a rectangle image" do
-    let(:image_name) { "fish" }
-
-    it "raises an error" do
-      expect { pixels_handler }.to raise_error "Image should be a square"
-    end
+    expect(pixels_handler.pixels.length).to eq 480
   end
 
   describe "#add_margin" do
@@ -34,12 +25,32 @@ RSpec.describe VisualQrcode::PixelsHandler do
   describe "#resize" do
     subject(:resize) { pixels_handler.resize(new_size) }
 
-    let(:new_size) { 10 }
+    let(:new_size) { 100 }
 
     it "resizes the pixels matrix" do
       expect { resize }
         .to change { pixels_handler.pixels.length }.to(new_size)
         .and change { pixels_handler.pixels.first.length }.to(new_size)
+    end
+
+    context "with a horizontal rectangle image" do
+      let(:image_name) { "horizontal_rectangle" }
+
+      it "completes pixels with columns of transparency" do
+        expect { resize }
+          .to change { pixels_handler.pixels.length }.to(new_size)
+          .and change { pixels_handler.pixels.first.length }.to(new_size)
+      end
+    end
+
+    context "with a vertical rectangle image" do
+      let(:image_name) { "vertical_rectangle" }
+
+      it "completes pixels with rows of transparency" do
+        expect { resize }
+          .to change { pixels_handler.pixels.length }.to(new_size)
+          .and change { pixels_handler.pixels.first.length }.to(new_size)
+      end
     end
   end
 end
