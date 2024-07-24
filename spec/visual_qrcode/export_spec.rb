@@ -22,7 +22,7 @@ RSpec.describe VisualQrcode::Export do
     let(:qrcode_path) { "spec/images/#{image_name}_visual_qrcode.png" }
     let(:size) { nil }
     let(:padding_modules) { nil }
-    let(:qr_size) { nil }
+    let(:minimum_qr_size) { nil }
     let(:basic_modules_lenth) { visual_qrcode.basic_qrcode.modules.length }
     let(:visual_qrcode) do
       VisualQrcode::Qrcode.new(
@@ -30,7 +30,7 @@ RSpec.describe VisualQrcode::Export do
         image_path,
         size: size,
         padding_modules: padding_modules,
-        qr_size: qr_size
+        minimum_qr_size: minimum_qr_size
       )
     end
 
@@ -44,22 +44,22 @@ RSpec.describe VisualQrcode::Export do
       end
     end
 
-    context "with the marianne, a size and a qr_size" do
+    context "with the marianne, a size and a minimum_qr_size" do
       let(:image_name) { "marianne" }
       let(:text) { "https://www.service-public.fr/" }
       let(:size) { 260 }
-      let(:qr_size) { 10 }
+      let(:minimum_qr_size) { 10 }
 
       it "generates a visual qr code of marianne" do
         expect { write_file }.to(change { File.mtime(qrcode_path) })
       end
     end
 
-    context "with the zidane, a size, a qr_size and padding modules" do
+    context "with the zidane, a size, a minimum_qr_size and padding modules" do
       let(:image_name) { "zidane" }
       let(:text) { "https://en.wikipedia.org/wiki/Zinedine_Zidane" }
       let(:padding_modules) { 0 }
-      let(:qr_size) { 15 }
+      let(:minimum_qr_size) { 15 }
       let(:size) { 260 }
 
       it "generates a visual qr code of zidane" do

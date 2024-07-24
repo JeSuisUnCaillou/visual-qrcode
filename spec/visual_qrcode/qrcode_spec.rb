@@ -9,7 +9,7 @@ RSpec.describe VisualQrcode::Qrcode do
       image_path,
       size: size,
       padding_modules: padding_modules,
-      qr_size: qr_size
+      minimum_qr_size: minimum_qr_size
     )
   end
 
@@ -18,7 +18,7 @@ RSpec.describe VisualQrcode::Qrcode do
   let(:image_path) { "spec/images/#{image_name}.png" }
   let(:size) { nil }
   let(:padding_modules) { nil }
-  let(:qr_size) { nil }
+  let(:minimum_qr_size) { nil }
   let(:basic_modules_lenth) { visual_qrcode.basic_qrcode.modules.length }
 
   it "exposes a basic qrcode" do

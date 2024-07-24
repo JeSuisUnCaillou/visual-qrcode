@@ -89,14 +89,14 @@ You can also customize the padding if you want more or less modules than the def
 
 The minimum [size of RQRCodeCore](https://github.com/whomwah/rqrcode_core/tree/master?tab=readme-ov-file#options) used is 6 by default, to get enough space for the image to be visible inside the Visual QRCode.
 
-You can increase the amount of modules with the `qr_size` parameter. It corresponds to the [size option of RQRCodeCore](https://github.com/whomwah/rqrcode_core/tree/master?tab=readme-ov-file#options)
+You can increase the amount of modules with the `minimum_qr_size` parameter. It corresponds to the [size option of RQRCodeCore](https://github.com/whomwah/rqrcode_core/tree/master?tab=readme-ov-file#options)
 
 ```ruby
 visual_qr_code = VisualQrcode::Qrcode.new(
     "small content", 
     "spec/images/zidane.png", 
     size: 260,
-    qr_size: 15
+    minimum_qr_size: 15
 )
 ```
 
