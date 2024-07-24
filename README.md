@@ -39,7 +39,7 @@ The basic usage requires a string for the QRCode content and an `image_path` (or
 
 ```ruby
 visual_qr_code = VisualQrcode::Qrcode.new(
-    "Taataaaa Yoyoyooooo ! Qu'est-ce que tu caches sous ton grand chapeauuuuuu !",
+    "This is the sentence that will read in the QR Code",
     "spec/images/marianne.png"
 )
 
@@ -70,7 +70,7 @@ If your content is small and produces a QR Code of small size (big patterns, few
 
 ```ruby
 visual_qr_code = VisualQrcode::Qrcode.new(
-    "eh", 
+    "small content", 
     "spec/images/zidane.png", 
     qr_size: 10
 )
