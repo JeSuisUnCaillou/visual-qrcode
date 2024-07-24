@@ -56,12 +56,12 @@ You can also add a size parameter, in pixels. This size can't be smaller than th
 
 ```ruby
 visual_qr_code = VisualQrcode::Qrcode.new(
-    "This is a leaf. Yeah. Big surprise, isn't it ?", 
-    "spec/images/leaf.png", 
+    "https://www.ruby-lang.org/", 
+    "spec/images/ruby.png", 
     size: 280
 )
 
-visual_qrcode.as_png.write("./leaf_visual_qrcode_280x280.png")
+visual_qrcode.as_png.write("./ruby_visual_qrcode_280x280.png")
 ```
 
 If you choose a size too small, you'll get an error informing you of the minimum size necessary for your content.
@@ -90,8 +90,8 @@ If your image has enough transparency to dodge the QRCode lines, you can remove 
 
 ```ruby
 visual_qr_code = VisualQrcode::Qrcode.new(
-    "My leaf don't need no padding, it's a strong and independant leaf",
-    "spec/images/leaf.png", 
+    "My ruby don't need no padding, it's a strong and independant ruby",
+    "spec/images/ruby.png", 
     size: 280, 
     padding_modules: 0
 )

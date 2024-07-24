@@ -155,7 +155,7 @@ RSpec.describe VisualQrcode::Qrcode do
       let(:text) { "https://www.ruby-lang.org/" }
       let(:size) { 260 }
 
-      it "generates a visual qr code of leaf" do
+      it "generates a visual qr code of ruby" do
         expect { export }.to(change { File.mtime(qrcode_path) })
       end
     end
