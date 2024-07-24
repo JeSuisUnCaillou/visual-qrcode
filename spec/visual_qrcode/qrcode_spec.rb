@@ -13,7 +13,7 @@ RSpec.describe VisualQrcode::Qrcode do
     )
   end
 
-  let(:text) { "Taataaaa Yoyoyooooo ! Qu'est-ce que tu caches sous ton grand chapeauuuuuu !" }
+  let(:text) { "Taataaaa Yoyoyooooo ! Qu'est-ce qu'il y a sous ton grand chapeauuuuuu !" }
   let(:image_name) { "marianne" }
   let(:image_path) { "spec/images/#{image_name}.png" }
   let(:size) { nil }
